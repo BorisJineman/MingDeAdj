@@ -44,9 +44,9 @@ namespace MingDeAdj
         private void button1_Click(object sender, EventArgs e)
         {
             Sys.Dev = ((Device)comboBox1.SelectedItem).CaptureDevice;
-            Sys.Dev.Open();            
+            Sys.Dev.Open();
 
-            Sys.ProtocolType = new byte[] { 0x92, 0x20 };
+            Sys.ProtocolType = BitConverter.GetBytes(Convert.ToInt16(0x9220));
             Sys.Dev.Filter = "ether proto 0x9220";
 
             Sys.SenderMAC = Sys.Dev.MacAddress.GetAddressBytes();  

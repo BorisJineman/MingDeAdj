@@ -49,13 +49,13 @@ namespace MingDeAdj
             sendDatas.Add(0x00);
 
             // 17 - DI Status
-            sendDatas.Add(0x00);
-
-            // 18 - DO Status
             sendDatas.AddRange(new byte[2]);
 
+            // 18 - DO Status
+            sendDatas.Add(0x00);
+
             // 20 - AI Status
-            sendDatas.AddRange(new byte[132]);
+            sendDatas.AddRange(new byte[228]);
 
             // 152 - AQ Status
             sendDatas.AddRange(new byte[16]);
@@ -81,27 +81,29 @@ namespace MingDeAdj
                         case 1:
 
                             label3.Text = "Read Cfg Data OK.";
-                            for (int i = 0; i < 8;i++ )
+                            for (int i = 0; i < 8; i++)
                             {
-                                diCheckBoxs[i].Checked = Convert.ToBoolean((p[17] >> i) & 0x01);                                
+                                diCheckBoxs[i].Checked = Convert.ToBoolean((BitConverter.ToInt16(p, 18) >> i) & 0x01);
+
                             }
 
-                            for (int i = 0; i < 16;i++ )
+                            for (int i = 0; i < 16; i++)
                             {
-                                doCheckBoxs[i].Checked = Convert.ToBoolean((BitConverter.ToInt16(p, 18) >> i) & 0x01);    
+                                doCheckBoxs[i].Checked = Convert.ToBoolean((p[19] >> i) & 0x01);
+
                             }
 
                             for (int i = 0; i < 11;i++ )
                             {
                                 aiCurrentTextBox[i].Text = BitConverter.ToInt32(p, 20 + i * 4).ToString();
-                                aiFullTextBox[i].Text = BitConverter.ToInt32(p, 64 + i * 4).ToString();
-                                aiEmptyTextBox[i].Text = BitConverter.ToInt32(p, 108 + i * 4).ToString();
+                                aiFullTextBox[i].Text = BitConverter.ToInt32(p, 96 + i * 4).ToString();
+                                aiEmptyTextBox[i].Text = BitConverter.ToInt32(p, 172 + i * 4).ToString();
                             }
 
                             for (int i = 0; i < 2; i++)
                             {
-                                aoOutput[i].Text = BitConverter.ToInt32(p, 152 + i * 4).ToString();
-                                aoActual[i].Text = BitConverter.ToInt32(p, 160 + i * 4).ToString();
+                                aoOutput[i].Text = BitConverter.ToInt32(p, 248 + i * 4).ToString();
+                                aoActual[i].Text = BitConverter.ToInt32(p, 256 + i * 4).ToString();
                             }
 
                             break;
@@ -142,16 +144,16 @@ namespace MingDeAdj
             diCheckBoxs.Add(checkBox6);
             diCheckBoxs.Add(checkBox7);
             diCheckBoxs.Add(checkBox8);
-
+            diCheckBoxs.Add(checkBox17);
+            diCheckBoxs.Add(checkBox18);
+            diCheckBoxs.Add(checkBox19);
+            diCheckBoxs.Add(checkBox20);
+            diCheckBoxs.Add(checkBox21);
+            diCheckBoxs.Add(checkBox22);
+            diCheckBoxs.Add(checkBox23);
+            diCheckBoxs.Add(checkBox24);
+                                     
             //do 16
-            doCheckBoxs.Add(checkBox1);
-            doCheckBoxs.Add(checkBox2);
-            doCheckBoxs.Add(checkBox3);
-            doCheckBoxs.Add(checkBox4);
-            doCheckBoxs.Add(checkBox5);
-            doCheckBoxs.Add(checkBox6);
-            doCheckBoxs.Add(checkBox7);
-            doCheckBoxs.Add(checkBox8);
             doCheckBoxs.Add(checkBox9);
             doCheckBoxs.Add(checkBox10);
             doCheckBoxs.Add(checkBox11);
@@ -173,19 +175,14 @@ namespace MingDeAdj
             aiCurrentTextBox.Add(textBox28);
             aiCurrentTextBox.Add(textBox31);
             aiCurrentTextBox.Add(textBox34);
-
-            //ai current 11
-            aiCurrentTextBox.Add(textBox4);
-            aiCurrentTextBox.Add(textBox5);
-            aiCurrentTextBox.Add(textBox6);
-            aiCurrentTextBox.Add(textBox7);
-            aiCurrentTextBox.Add(textBox8);
-            aiCurrentTextBox.Add(textBox9);
-            aiCurrentTextBox.Add(textBox10);
-            aiCurrentTextBox.Add(textBox11);
-            aiCurrentTextBox.Add(textBox28);
-            aiCurrentTextBox.Add(textBox31);
-            aiCurrentTextBox.Add(textBox34);
+            aiCurrentTextBox.Add(textBox3);
+            aiCurrentTextBox.Add(textBox41);
+            aiCurrentTextBox.Add(textBox44);
+            aiCurrentTextBox.Add(textBox47);
+            aiCurrentTextBox.Add(textBox50);
+            aiCurrentTextBox.Add(textBox53);
+            aiCurrentTextBox.Add(textBox56);
+            aiCurrentTextBox.Add(textBox59);
 
             //ai full 11
             aiFullTextBox.Add(textBox12);
@@ -199,6 +196,14 @@ namespace MingDeAdj
             aiFullTextBox.Add(textBox29);
             aiFullTextBox.Add(textBox32);
             aiFullTextBox.Add(textBox35);
+            aiFullTextBox.Add(textBox37);
+            aiFullTextBox.Add(textBox42);
+            aiFullTextBox.Add(textBox45);
+            aiFullTextBox.Add(textBox48);
+            aiFullTextBox.Add(textBox51);
+            aiFullTextBox.Add(textBox54);
+            aiFullTextBox.Add(textBox57);
+            aiFullTextBox.Add(textBox60);
 
             //ai empty 11
             aiEmptyTextBox.Add(textBox20);
@@ -212,6 +217,14 @@ namespace MingDeAdj
             aiEmptyTextBox.Add(textBox30);
             aiEmptyTextBox.Add(textBox33);
             aiEmptyTextBox.Add(textBox36);
+            aiEmptyTextBox.Add(textBox39);
+            aiEmptyTextBox.Add(textBox43);
+            aiEmptyTextBox.Add(textBox46);
+            aiEmptyTextBox.Add(textBox49);
+            aiEmptyTextBox.Add(textBox52);
+            aiEmptyTextBox.Add(textBox55);
+            aiEmptyTextBox.Add(textBox58);
+            aiEmptyTextBox.Add(textBox61);
 
 
             //ao output 2
@@ -243,36 +256,37 @@ namespace MingDeAdj
 
                 // Command ID 
                 // 15
-                sendDatas.Add(0x02);
+                sendDatas.Add(0x03);
 
                 // x bytes for LOAD
                 // 16 - Device Status
                 sendDatas.Add(0x00);
 
                 // 17 - di
-                byte di = 0;
-                for (int i = 0; i < 8; i++)
-                {
-                    di |= (byte)((diCheckBoxs[i].Checked ? 1 : 0) << 8);
-                    di = (byte)(di >> 1);
-                }
-                sendDatas.Add(di);
-
-                // 18 - do
-                Int16 dodata = 0;
+                Int16 di = 0;
                 for (int i = 0; i < 16; i++)
                 {
-                    dodata |= (Int16)((doCheckBoxs[i].Checked ? 1 : 0) << 16);
-                    dodata = (Int16)(dodata >> 1);
+                    di |= (Int16)((diCheckBoxs[i].Checked ? 1 : 0) << 8);
+                    di = (Int16)(di >> 1);
+                }
+
+                sendDatas.AddRange(BitConverter.GetBytes(di));
+
+                // 18 - do
+                byte dodata = 0;
+                for (int i = 0; i < 8; i++)
+                {
+                    dodata |= (byte)((doCheckBoxs[i].Checked ? 1 : 0) << 16);
+                    dodata = (byte)(dodata >> 1);
 
                 }
-                sendDatas.AddRange(BitConverter.GetBytes(dodata));
+                sendDatas.Add(dodata);
 
                 // 20 - ai
                 List<byte> aiCurrentTemp = new List<byte>();
                 List<byte> aiFullTemp = new List<byte>();
                 List<byte> aiEmptyTemp = new List<byte>();
-                for (int i = 0; i < 11; i++)
+                for (int i = 0; i < 19; i++)
                 {
                     aiCurrentTemp.AddRange(BitConverter.GetBytes(Convert.ToInt32(aiCurrentTextBox[i].Text)));
                     aiFullTemp.AddRange(BitConverter.GetBytes(Convert.ToInt32(aiFullTextBox[i].Text)));
