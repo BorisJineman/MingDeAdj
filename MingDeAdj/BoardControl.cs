@@ -32,8 +32,8 @@ namespace MingDeAdj
             //  Sender + Receiver + Protocol
             // 0
             List<byte> sendDatas = new List<byte>();
-            sendDatas.AddRange(Sys.SenderMAC);
             sendDatas.AddRange(Sys.ReceiverMAC);
+            sendDatas.AddRange(Sys.SenderMAC);
             sendDatas.AddRange(Sys.ProtocolType);
 
             // Addr ID
@@ -83,7 +83,7 @@ namespace MingDeAdj
                             label3.Text = "Read Cfg Data OK.";
                             for (int i = 0; i < 8; i++)
                             {
-                                diCheckBoxs[i].Checked = Convert.ToBoolean((BitConverter.ToInt16(p, 18) >> i) & 0x01);
+                                diCheckBoxs[i].Checked = Convert.ToBoolean((BitConverter.ToUInt16(p, 17) >> i) & 0x01);
 
                             }
 
@@ -246,8 +246,8 @@ namespace MingDeAdj
                 //  Sender + Receiver + Protocol
                 // 0
                 List<byte> sendDatas = new List<byte>();
-                sendDatas.AddRange(Sys.SenderMAC);
                 sendDatas.AddRange(Sys.ReceiverMAC);
+                sendDatas.AddRange(Sys.SenderMAC);
                 sendDatas.AddRange(Sys.ProtocolType);
 
                 // Addr ID
@@ -263,11 +263,11 @@ namespace MingDeAdj
                 sendDatas.Add(0x00);
 
                 // 17 - di
-                Int16 di = 0;
+                UInt16 di = 0;
                 for (int i = 0; i < 16; i++)
                 {
-                    di |= (Int16)((diCheckBoxs[i].Checked ? 1 : 0) << 8);
-                    di = (Int16)(di >> 1);
+                    di |= (UInt16)((diCheckBoxs[i].Checked ? 1 : 0) << 8);
+                    di = (UInt16)(di >> 1);
                 }
 
                 sendDatas.AddRange(BitConverter.GetBytes(di));
