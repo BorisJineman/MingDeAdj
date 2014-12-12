@@ -70,7 +70,8 @@ namespace MingDeAdj
 
         public void PacketReceived(byte[] p)
         {
-            
+           // MessageBox.Show(BitConverter.ToString(p));
+            try {             
             if (p[15] % 2 == 1)
             {
                 if (p[14] == currentID)
@@ -81,19 +82,19 @@ namespace MingDeAdj
                         case 1:
 
                             label3.Text = "Read Cfg Data OK.";
-                            for (int i = 0; i < 8; i++)
+                            for (int i = 0; i < 16; i++)
                             {
                                 diCheckBoxs[i].Checked = Convert.ToBoolean((BitConverter.ToUInt16(p, 17) >> i) & 0x01);
 
                             }
 
-                            for (int i = 0; i < 16; i++)
+                            for (int i = 0; i < 8; i++)
                             {
                                 doCheckBoxs[i].Checked = Convert.ToBoolean((p[19] >> i) & 0x01);
 
                             }
 
-                            for (int i = 0; i < 11;i++ )
+                            for (int i = 0; i < 19;i++ )
                             {
                                 aiCurrentTextBox[i].Text = BitConverter.ToInt32(p, 20 + i * 4).ToString();
                                 aiFullTextBox[i].Text = BitConverter.ToInt32(p, 96 + i * 4).ToString();
@@ -120,7 +121,9 @@ namespace MingDeAdj
 
                     }
                 }
-            }
+            }}
+                catch(Exception ex)
+            { MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace); }
         }
 
 

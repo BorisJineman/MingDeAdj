@@ -53,7 +53,7 @@ namespace MingDeAdj
             Sys.ReceiverMAC = new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
             Sys.Dev.OnPacketArrival += Dev_OnPacketArrival;
-
+            Sys.Dev.StartCapture();
             comboBox1.Enabled = false;
             button1.Enabled = false;
             button2.Enabled = true;
@@ -65,20 +65,20 @@ namespace MingDeAdj
 
             toolStripStatusLabel2.Text = comboBox1.SelectedItem.ToString();
         }
-
+       // delegate void PkgProcessDele(byte[])
         void Dev_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             this.Invoke(new Action<byte[]>(p => 
             { this.boardControl1.PacketReceived(p); 
                 this.boardControl2.PacketReceived(p); 
                 this.boardControl3.PacketReceived(p); 
-                this.boardControl4.PacketReceived(p); }), new object[] { e.Packet });
+                this.boardControl4.PacketReceived(p); }), new object[] { e.Packet.Data });
            
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            Sys.Dev.StopCapture();
             Sys.Dev.OnPacketArrival -= Dev_OnPacketArrival;
 
             Sys.Dev.Close();
