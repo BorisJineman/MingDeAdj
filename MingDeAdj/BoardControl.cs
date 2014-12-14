@@ -114,6 +114,11 @@ namespace MingDeAdj
 
                             break;
 
+                        case 5:
+                            label3.Text = "Reset Cfg Data OK.";
+
+                            break;
+
                         default:
 
                            
@@ -322,6 +327,29 @@ namespace MingDeAdj
             {
                 label3.Text = ex.Message;
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //  Sender + Receiver + Protocol
+            // 0
+            List<byte> sendDatas = new List<byte>();
+            sendDatas.AddRange(Sys.ReceiverMAC);
+            sendDatas.AddRange(Sys.SenderMAC);
+            sendDatas.AddRange(Sys.ProtocolType);
+
+            // Addr ID
+            // 14
+            sendDatas.Add(currentID);
+
+            // Command ID 
+            // 15
+            sendDatas.Add(0x04);
+
+            Sys.Dev.SendPacket(sendDatas.ToArray());
+
+            label3.Text = "Reset Cfg Data ...";
+            label6.Text = "Unknown";
         }
     }
 }

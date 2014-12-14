@@ -154,6 +154,7 @@
             this.textBox59 = new System.Windows.Forms.TextBox();
             this.textBox60 = new System.Windows.Forms.TextBox();
             this.textBox61 = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label27
@@ -1195,6 +1196,16 @@
             this.textBox61.Size = new System.Drawing.Size(100, 20);
             this.textBox61.TabIndex = 72;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(441, 66);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(136, 25);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "Reset Cfg Data";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // BoardControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1323,6 +1334,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button3);
             this.Name = "BoardControl";
@@ -1461,6 +1473,7 @@
         private System.Windows.Forms.TextBox textBox59;
         private System.Windows.Forms.TextBox textBox60;
         private System.Windows.Forms.TextBox textBox61;
+        private System.Windows.Forms.Button button2;
 
     }
 }
