@@ -259,7 +259,7 @@ namespace MingDeAdj
 
                 // Command ID 
                 // 15
-                sendDatas.Add(0x03);
+                sendDatas.Add(0x02);
 
                 // x bytes for LOAD
                 // 16 - Device Status
