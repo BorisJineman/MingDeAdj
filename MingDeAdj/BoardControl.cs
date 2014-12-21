@@ -59,7 +59,8 @@ namespace MingDeAdj
 
             // 152 - AQ Status
             sendDatas.AddRange(new byte[16]);
-
+            //deviceid
+            sendDatas.AddRange(new Byte[4]);
             // about 168 Bytes need to be sent
 
             Sys.Dev.SendPacket(sendDatas.ToArray());
@@ -107,6 +108,7 @@ namespace MingDeAdj
                                 aoActual[i].Text = BitConverter.ToInt32(p, 256 + i * 4).ToString();
                             }
 
+                            DeviceID.Text = BitConverter.ToUInt32(p, 264).ToString();
                             break;
 
                         case 3:
@@ -315,6 +317,7 @@ namespace MingDeAdj
                 sendDatas.AddRange(aoOutputTemp);
                 sendDatas.AddRange(aoActualTemp);
 
+                sendDatas.AddRange(BitConverter.GetBytes(Convert.ToUInt32(DeviceID.Text)));
                 // about 168 bytes need to be sent
 
                 Sys.Dev.SendPacket(sendDatas.ToArray());
@@ -350,6 +353,69 @@ namespace MingDeAdj
 
             label3.Text = "Reset Cfg Data ...";
             label6.Text = "Unknown";
+        }
+
+     
+        private void FastAdj(object sender, EventArgs e)
+        {
+            if (sender is Button)
+            {
+                Button adjBtn = sender as Button;
+                if (adjBtn.Text == "F")
+                    aiFullTextBox[Convert.ToInt32(adjBtn.Tag)].Text = aiCurrentTextBox[Convert.ToInt32(adjBtn.Tag)].Text;
+                else if(adjBtn.Text=="E")
+                    aiEmptyTextBox[Convert.ToInt32(adjBtn.Tag)].Text = aiCurrentTextBox[Convert.ToInt32(adjBtn.Tag)].Text;
+
+            }
+        }
+
+        private void button42_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.FileName = DeviceID.Text + ".adj";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                StringBuilder sb = new StringBuilder();
+                List<string> items = new List<string>();
+                for (int i = 0; i < aiFullTextBox.Count; i++)
+                    items.Add(aiFullTextBox[i].Text);
+                for (int i = 0; i < aiEmptyTextBox.Count; i++)
+                    items.Add(aiEmptyTextBox[i].Text);
+                for (int i = 0; i < aoActual.Count; i++)
+                    items.Add(aoActual[i].Text);
+                foreach (string item in items)
+                {
+                    sb.Append(item + ",");
+                }
+                sb.Remove(sb.Length - 1, 1);
+
+                System.IO.File.WriteAllText(saveFileDialog1.FileName, sb.ToString());
+            }
+        }
+
+        private void button43_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.FileName = DeviceID.Text + ".adj";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                int index = 0;
+               string[] items= System.IO.File.ReadAllText(openFileDialog1.FileName).Split(',');
+
+                for (int i = 0; i < aiFullTextBox.Count; i++)
+                {
+                    aiFullTextBox[i].Text = items[index];
+                    index++;
+                }
+                for (int i = 0; i < aiEmptyTextBox.Count; i++)
+                {
+                    aiEmptyTextBox[i].Text = items[index];
+                    index++;
+                }
+                for (int i = 0; i < aoActual.Count; i++)
+                {
+                    aoActual[i].Text = items[index];
+                    index++;
+                }
+            }
         }
     }
 }
