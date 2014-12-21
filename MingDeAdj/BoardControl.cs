@@ -276,7 +276,7 @@ namespace MingDeAdj
                 UInt16 di = 0;
                 for (int i = 0; i < 16; i++)
                 {
-                    di |= (UInt16)((diCheckBoxs[i].Checked ? 1 : 0) << 8);
+                    di |= (UInt16)((diCheckBoxs[i].Checked ? 1 : 0) << 16);
                     di = (UInt16)(di >> 1);
                 }
 
@@ -286,7 +286,7 @@ namespace MingDeAdj
                 byte dodata = 0;
                 for (int i = 0; i < 8; i++)
                 {
-                    dodata |= (byte)((doCheckBoxs[i].Checked ? 1 : 0) << 16);
+                    dodata |= (byte)((doCheckBoxs[i].Checked ? 1 : 0) << 8);
                     dodata = (byte)(dodata >> 1);
 
                 }
